@@ -28,6 +28,7 @@ body {
 .intro h1 {
     color: #ffd166;
     margin-bottom: 20px;
+    animation: glow 2s infinite;
 }
 
 .intro button {
@@ -39,6 +40,7 @@ body {
     background: linear-gradient(45deg,#ff4d6d,#ffd166);
     color: #000;
     font-weight: bold;
+    box-shadow: 0 0 25px rgba(255,209,102,0.6);
 }
 
 .card {
@@ -49,7 +51,7 @@ body {
     box-shadow: 0 25px 60px rgba(0,0,0,0.9);
     padding: 20px;
     text-align: center;
-    display: none;
+    display: none; /* hidden initially */
 }
 
 /* Candle page */
@@ -74,15 +76,16 @@ body {
 }
 
 @keyframes candleBlink {
-    0% { text-shadow: 0 0 10px #fff,0 0 20px #ffecb3,0 0 30px #ffd166; }
-    50% { text-shadow: 0 0 20px #fff,0 0 40px #ffecb3,0 0 60px #ffd166; }
-    100% { text-shadow: 0 0 15px #fff,0 0 30px #ffecb3,0 0 45px #ffd166; }
+    0% { text-shadow: 0 0 10px #fff, 0 0 20px #ffecb3, 0 0 30px #ffd166; }
+    50% { text-shadow: 0 0 20px #fff, 0 0 40px #ffecb3, 0 0 60px #ffd166; }
+    100% { text-shadow: 0 0 15px #fff, 0 0 30px #ffecb3, 0 0 45px #ffd166; }
 }
 
 .candle-tooltip {
     margin-top: 20px;
     font-size: 16px;
     color: #fff;
+    display: block;
 }
 
 /* Image + Messages */
@@ -123,9 +126,9 @@ body {
 }
 
 @keyframes blowSmoke {
-    0% { transform: translateY(0) scale(1); opacity:1; }
-    50% { transform: translateY(-50px) scale(1.2); opacity:0.7; }
-    100% { transform: translateY(-120px) scale(1.5); opacity:0; }
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    50% { transform: translateY(-50px) scale(1.2); opacity: 0.7; }
+    100% { transform: translateY(-120px) scale(1.5); opacity: 0; }
 }
 </style>
 </head>
@@ -141,11 +144,11 @@ body {
     <div id="candlePage">
         <div class="candle-container" id="candleContainer">
             <span class="candle">🕯️</span>
-            <span class="candle-tooltip" id="tooltip">Tap to blow the candle!</span>
+            <span class="candle-tooltip">Tap to blow the candle!</span>
         </div>
     </div>
 
-    <!-- Messages -->
+    <!-- Image + Messages -->
     <img src="husband.jpg" class="photo-full" id="pageImage" alt="Image">
     <div id="messageContainer"></div>
     <button class="next-btn" id="nextBtn">Next →</button>
@@ -166,7 +169,6 @@ const intro = document.getElementById("intro");
 const card = document.getElementById("card");
 const candlePage = document.getElementById("candlePage");
 const candleContainer = document.getElementById("candleContainer");
-const tooltip = document.getElementById("tooltip");
 const pageImage = document.getElementById("pageImage");
 const messageContainer = document.getElementById("messageContainer");
 const nextBtn = document.getElementById("nextBtn");
@@ -177,15 +179,15 @@ function openCard() {
     intro.style.display = "none";
     card.style.display = "block";
     candlePage.style.display = "flex"; // show candle page only
-    tooltip.style.display = "block";
     pageImage.style.display = "none";
     nextBtn.style.display = "none";
 }
 
-// Candle click
 candleContainer.addEventListener("click", () => {
-    // Remove candle page completely
-    candlePage.remove(); // ✅ removes from DOM
+    // completely remove candle page
+    candlePage.style.display = "none";
+
+    // smoke effect
     const smoke = document.createElement("div");
     smoke.className = "smoke";
     smoke.textContent = "💨";
@@ -193,20 +195,22 @@ candleContainer.addEventListener("click", () => {
 
     setTimeout(() => {
         pageImage.style.display = "block";
-        messageContainer.innerHTML = `<div class='message-line'>Happy Birthday Vellayutham 🎉</div>
-                                      <div class='message-line'>${messages[0]}</div>`;
+        messageContainer.innerHTML = `
+            <div class='message-line'>Happy Birthday Vellayutham 🎉</div>
+            <div class='message-line'>${messages[0]}</div>
+        `;
         nextBtn.style.display = "inline-block";
         currentIndex = 0;
     }, 1200);
 });
 
-// Next button
 nextBtn.addEventListener("click", () => {
     currentIndex++;
     if(currentIndex < messages.length){
         messageContainer.innerHTML = `<div class='message-line'>${messages[currentIndex]}</div>`;
     } else {
         nextBtn.style.display = "none";
+        // confetti
         for(let i=0;i<30;i++){
             const c = document.createElement("div");
             c.className = "confetti";
