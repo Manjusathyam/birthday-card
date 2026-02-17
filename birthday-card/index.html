@@ -82,12 +82,12 @@ body {
 
 /* Candle page */
 #candlePage {
-    display: none; /* hidden initially */
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 50px;
+    display: none; /* hidden initially */
 }
 
 .candle-container {
@@ -112,7 +112,7 @@ body {
 
 /* Tooltip */
 .candle-tooltip {
-    display: none; /* hidden initially */
+    display: none;
     background-color: rgba(255, 255, 255, 0.85);
     color: #000;
     text-align: center;
@@ -124,7 +124,6 @@ body {
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
-    pointer-events: none;
 }
 
 /* Image for pages */
@@ -258,9 +257,13 @@ function openCard(){
     card.classList.add("show");
     startFloatingSmileys();
 
-    // Show candle page and tooltip
+    // Show only candle page first
     candlePage.style.display = "flex";
     candleTooltip.style.display = "block";
+
+    // Hide image/messages
+    pageImage.style.display = "none";
+    nextBtn.style.display = "none";
 }
 
 // Floating smileys
@@ -289,9 +292,10 @@ function startFloatingSmileys() {
 
 // Candle click
 candleContainer.addEventListener("click", () => {
+    // hide candle and tooltip
     candle.style.display = "none";
     candleTooltip.style.display = "none";
-    candlePage.style.display = "none"; // hide candle page
+    candlePage.style.display = "none";
 
     const smoke = document.createElement("div");
     smoke.className = "smoke";
