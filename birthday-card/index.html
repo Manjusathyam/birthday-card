@@ -80,38 +80,21 @@ body {
     to { opacity: 1; transform: scale(1); }
 }
 
-/* Image for pages */
-.photo-full {
+/* Candle page */
+#candlePage {
+    display: none; /* hidden initially */
     width: 100%;
-    height: 350px;
-    object-fit: contain;
-    background: #000;
-    margin-bottom: 16px;
-    display: none; /* hidden on candle page */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
 }
 
-/* Next button */
-.next-btn {
-    padding: 10px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #000;
-    background: linear-gradient(45deg,#ff4d6d,#ffd166);
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    margin-top: 20px;
-    box-shadow: 0 0 15px rgba(255,209,102,0.6);
-    display: none;
-}
-
-/* Candle - big, glowing */
 .candle-container {
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
     position: relative;
 }
 
@@ -127,9 +110,9 @@ body {
     100% { text-shadow: 0 0 15px #fff, 0 0 30px #ffecb3, 0 0 45px #ffd166; }
 }
 
-/* Candle tooltip - initially hidden */
+/* Tooltip */
 .candle-tooltip {
-    display: none;           /* hidden initially */
+    display: none; /* hidden initially */
     background-color: rgba(255, 255, 255, 0.85);
     color: #000;
     text-align: center;
@@ -137,13 +120,36 @@ body {
     border-radius: 6px;
     font-size: 16px;
     position: absolute;
-    top: 100px;              /* distance from candle, adjust */
+    top: 100px;
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
     pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.3s;
+}
+
+/* Image for pages */
+.photo-full {
+    width: 100%;
+    height: 350px;
+    object-fit: contain;
+    background: #000;
+    margin-bottom: 16px;
+    display: none;
+}
+
+/* Next button */
+.next-btn {
+    padding: 10px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    background: linear-gradient(45deg,#ff4d6d,#ffd166);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0 0 15px rgba(255,209,102,0.6);
+    display: none;
 }
 
 /* Smoke */
@@ -169,7 +175,7 @@ body {
     margin-top: 20px;
 }
 
-/* Floating smileys for top & bottom on all pages */
+/* Floating smileys */
 .float-smiley {
     position: absolute;
     pointer-events: none;
@@ -210,14 +216,16 @@ body {
 
 <!-- CARD -->
 <div class="card" id="card">
-    <img src="husband.jpg" class="photo-full" id="pageImage" alt="Image">
-    
     <!-- Candle page -->
-    <div class="candle-container" id="candleContainer">
-        <span class="candle" id="candle">🕯️</span>
-        <span class="candle-tooltip" id="candleTooltip">Tap to blow the candle!</span>
+    <div id="candlePage">
+        <div class="candle-container" id="candleContainer">
+            <span class="candle" id="candle">🕯️</span>
+            <span class="candle-tooltip" id="candleTooltip">Tap to blow the candle!</span>
+        </div>
     </div>
 
+    <!-- Image + Messages -->
+    <img src="husband.jpg" class="photo-full" id="pageImage" alt="Image">
     <div id="messageContainer"></div>
     <button class="next-btn" id="nextBtn">Next →</button>
 </div>
@@ -242,6 +250,7 @@ const nextBtn = document.getElementById("nextBtn");
 const container = document.getElementById("messageContainer");
 const pageImage = document.getElementById("pageImage");
 const candleTooltip = document.getElementById("candleTooltip");
+const candlePage = document.getElementById("candlePage");
 
 // Open card
 function openCard(){
@@ -249,11 +258,12 @@ function openCard(){
     card.classList.add("show");
     startFloatingSmileys();
 
-    // Show candle tooltip
+    // Show candle page and tooltip
+    candlePage.style.display = "flex";
     candleTooltip.style.display = "block";
 }
 
-// Floating smileys top & bottom
+// Floating smileys
 function startFloatingSmileys() {
     const items = ["🎂","❤️","🎉","✨","💖","🥳","💝"];
     for (let i = 0; i < 20; i++) {
@@ -277,10 +287,11 @@ function startFloatingSmileys() {
     }
 }
 
-// Candle click: blow out and show first page
+// Candle click
 candleContainer.addEventListener("click", () => {
     candle.style.display = "none";
-    candleTooltip.style.display = "none"; // hide tooltip after click
+    candleTooltip.style.display = "none";
+    candlePage.style.display = "none"; // hide candle page
 
     const smoke = document.createElement("div");
     smoke.className = "smoke";
@@ -294,7 +305,7 @@ candleContainer.addEventListener("click", () => {
             <div class='message-line'>${messages[0]}</div>
         `;
         nextBtn.style.display = "inline-block";
-        currentIndex = 0; // already showed first message
+        currentIndex = 0;
     }, 1200);
 });
 
@@ -305,7 +316,6 @@ nextBtn.addEventListener("click", () => {
         showMessage(currentIndex);
     } else {
         nextBtn.style.display = "none";
-        // confetti
         for(let i=0;i<30;i++){
             const c = document.createElement("div");
             c.className = "confetti";
