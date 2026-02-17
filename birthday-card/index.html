@@ -15,7 +15,6 @@ body {
     align-items: center;
 }
 
-/* INTRO SCREEN */
 .intro {
     position: fixed;
     inset: 0;
@@ -24,13 +23,11 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 50;
 }
 
 .intro h1 {
     color: #ffd166;
     margin-bottom: 20px;
-    animation: glow 2s infinite;
 }
 
 .intro button {
@@ -42,55 +39,68 @@ body {
     background: linear-gradient(45deg,#ff4d6d,#ffd166);
     color: #000;
     font-weight: bold;
-    box-shadow: 0 0 25px rgba(255,209,102,0.6);
 }
 
-.intro.hide {
-    animation: fadeOut 1.2s forwards;
-}
-
-@keyframes fadeOut {
-    to { opacity: 0; visibility: hidden; }
-}
-
-/* CARD */
 .card {
     width: 360px;
     min-height: 620px;
     background: linear-gradient(160deg, #1a1a1a, #222831);
     border-radius: 24px;
     box-shadow: 0 25px 60px rgba(0,0,0,0.9);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     padding: 20px;
     text-align: center;
+    display: none;
+}
+
+/* Candle page */
+#candlePage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.candle-container {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
-    opacity: 0;
-    transform: scale(0.9);
 }
 
-.card.show {
-    animation: cardIn 1.2s ease forwards;
+.candle {
+    font-size: 80px;
+    animation: candleBlink 1s infinite alternate;
 }
 
-@keyframes cardIn {
-    to { opacity: 1; transform: scale(1); }
+@keyframes candleBlink {
+    0% { text-shadow: 0 0 10px #fff,0 0 20px #ffecb3,0 0 30px #ffd166; }
+    50% { text-shadow: 0 0 20px #fff,0 0 40px #ffecb3,0 0 60px #ffd166; }
+    100% { text-shadow: 0 0 15px #fff,0 0 30px #ffecb3,0 0 45px #ffd166; }
 }
 
-/* Image for pages */
+.candle-tooltip {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #fff;
+}
+
+/* Image + Messages */
 .photo-full {
     width: 100%;
     height: 350px;
     object-fit: contain;
     background: #000;
     margin-bottom: 16px;
-    display: none; /* hidden on candle page */
+    display: none;
 }
 
-/* Next button */
+.message-line {
+    color: #fff;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
 .next-btn {
     padding: 10px 25px;
     font-size: 16px;
@@ -101,75 +111,24 @@ body {
     border-radius: 25px;
     cursor: pointer;
     margin-top: 20px;
-    box-shadow: 0 0 15px rgba(255,209,102,0.6);
     display: none;
 }
 
-/* Candle - big, glowing */
-.candle-container {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
-    position: relative;
-}
-
-.candle {
-    font-size: 80px;
-    animation: candleBlink 1s infinite alternate;
-    position: relative;
-}
-
-@keyframes candleBlink {
-    0% { text-shadow: 0 0 10px #fff, 0 0 20px #ffecb3, 0 0 30px #ffd166; }
-    50% { text-shadow: 0 0 20px #fff, 0 0 40px #ffecb3, 0 0 60px #ffd166; }
-    100% { text-shadow: 0 0 15px #fff, 0 0 30px #ffecb3, 0 0 45px #ffd166; }
-}
-
-/* Candle tooltip - initially hidden */
-.candle-tooltip {
-    display: none;           /* hidden initially */
-    background-color: rgba(255, 255, 255, 0.85);
-    color: #000;
-    text-align: center;
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 16px;
-    position: absolute;
-    top: 100px;              /* distance from candle, adjust */
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.3s;
-}
-
-/* Smoke */
 .smoke {
     position: absolute;
     bottom: 200px;
     font-size: 50px;
     opacity: 0;
-    pointer-events: none;
     animation: blowSmoke 1.2s forwards;
 }
 
 @keyframes blowSmoke {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    50% { transform: translateY(-50px) scale(1.2); opacity: 0.7; }
-    100% { transform: translateY(-120px) scale(1.5); opacity: 0; }
+    0% { transform: translateY(0) scale(1); opacity:1; }
+    50% { transform: translateY(-50px) scale(1.2); opacity:0.7; }
+    100% { transform: translateY(-120px) scale(1.5); opacity:0; }
 }
 
-/* Message line */
-.message-line {
-    color: #fff;
-    font-size: 18px;
-    margin-top: 20px;
-}
-
-/* Floating smileys for top & bottom on all pages */
+/* Floating emojis */
 .float-smiley {
     position: absolute;
     pointer-events: none;
@@ -202,22 +161,22 @@ body {
 </head>
 <body>
 
-<!-- INTRO -->
 <div class="intro" id="intro">
     <h1>💌 A Special Surprise 💌</h1>
     <button onclick="openCard()">Open Card 🎁</button>
 </div>
 
-<!-- CARD -->
 <div class="card" id="card">
-    <img src="husband.jpg" class="photo-full" id="pageImage" alt="Image">
-    
     <!-- Candle page -->
-    <div class="candle-container" id="candleContainer">
-        <span class="candle" id="candle">🕯️</span>
-        <span class="candle-tooltip" id="candleTooltip">Tap to blow the candle!</span>
+    <div id="candlePage">
+        <div class="candle-container" id="candleContainer">
+            <span class="candle">🕯️</span>
+            <span class="candle-tooltip" id="tooltip">Tap to blow the candle!</span>
+        </div>
     </div>
 
+    <!-- Messages -->
+    <img src="husband.jpg" class="photo-full" id="pageImage" alt="Image">
     <div id="messageContainer"></div>
     <button class="next-btn" id="nextBtn">Next →</button>
 </div>
@@ -233,28 +192,27 @@ const messages = [
     "Forever yours❤️"
 ];
 
-let currentIndex = -1;
 const intro = document.getElementById("intro");
 const card = document.getElementById("card");
-const candle = document.getElementById("candle");
+const candlePage = document.getElementById("candlePage");
 const candleContainer = document.getElementById("candleContainer");
-const nextBtn = document.getElementById("nextBtn");
-const container = document.getElementById("messageContainer");
+const tooltip = document.getElementById("tooltip");
 const pageImage = document.getElementById("pageImage");
-const candleTooltip = document.getElementById("candleTooltip");
+const messageContainer = document.getElementById("messageContainer");
+const nextBtn = document.getElementById("nextBtn");
+
+let currentIndex = -1;
 
 // Open card
-function openCard(){
-    intro.classList.add("hide");
-    card.classList.add("show");
-    startFloatingSmileys();
+function openCard() {
+    intro.style.display = "none";
+    card.style.display = "block";
+    candlePage.style.display = "flex";
+    tooltip.style.display = "block";
+    pageImage.style.display = "none";
+    nextBtn.style.display = "none";
 
-    // Show candle tooltip
-    candleTooltip.style.display = "block";
-}
-
-// Floating smileys top & bottom
-function startFloatingSmileys() {
+    // Floating emojis
     const items = ["🎂","❤️","🎉","✨","💖","🥳","💝"];
     for (let i = 0; i < 20; i++) {
         let elTop = document.createElement("div");
@@ -277,24 +235,22 @@ function startFloatingSmileys() {
     }
 }
 
-// Candle click: blow out and show first page
+// Candle click
 candleContainer.addEventListener("click", () => {
-    candle.style.display = "none";
-    candleTooltip.style.display = "none"; // hide tooltip after click
+    candlePage.remove(); // remove candle + tooltip
 
+    // Smoke
     const smoke = document.createElement("div");
     smoke.className = "smoke";
     smoke.textContent = "💨";
     document.body.appendChild(smoke);
 
     setTimeout(() => {
-        pageImage.style.display = "block"; 
-        container.innerHTML = `
-            <div class='message-line'>Happy Birthday Vellayutham 🎉</div>
-            <div class='message-line'>${messages[0]}</div>
-        `;
+        pageImage.style.display = "block";
+        messageContainer.innerHTML = `<div class='message-line'>Happy Birthday Vellayutham 🎉</div>
+                                      <div class='message-line'>${messages[0]}</div>`;
         nextBtn.style.display = "inline-block";
-        currentIndex = 0; // already showed first message
+        currentIndex = 0;
     }, 1200);
 });
 
@@ -302,10 +258,9 @@ candleContainer.addEventListener("click", () => {
 nextBtn.addEventListener("click", () => {
     currentIndex++;
     if(currentIndex < messages.length){
-        showMessage(currentIndex);
+        messageContainer.innerHTML = `<div class='message-line'>${messages[currentIndex]}</div>`;
     } else {
         nextBtn.style.display = "none";
-        // confetti
         for(let i=0;i<30;i++){
             const c = document.createElement("div");
             c.className = "confetti";
@@ -316,14 +271,6 @@ nextBtn.addEventListener("click", () => {
         }
     }
 });
-
-function showMessage(index){
-    container.innerHTML = "";
-    const line = document.createElement("div");
-    line.className = "message-line";
-    line.textContent = messages[index];
-    container.appendChild(line);
-}
 </script>
 </body>
 </html>
