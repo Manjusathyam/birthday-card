@@ -135,7 +135,6 @@ body {
     opacity: 0.9;
     z-index: 1;
     font-size: 20px;
-    animation: floatTopBottom 8s linear infinite;
 }
 
 @keyframes floatTopBottom {
@@ -203,7 +202,6 @@ const nextBtn = document.getElementById("nextBtn");
 
 let currentIndex = -1;
 
-// Open card
 function openCard() {
     intro.style.display = "none";
     card.style.display = "block";
@@ -221,6 +219,7 @@ function openCard() {
         elTop.style.top = "-30px";
         elTop.style.left = Math.random()*100 + "vw";
         elTop.style.fontSize = (14 + Math.random()*14) + "px";
+        elTop.style.animation = `floatTopBottom ${8 + Math.random()*4}s linear infinite`;
         elTop.style.animationDelay = Math.random()*5 + "s";
         document.body.appendChild(elTop);
 
@@ -230,6 +229,7 @@ function openCard() {
         elBottom.style.bottom = "-30px";
         elBottom.style.left = Math.random()*100 + "vw";
         elBottom.style.fontSize = (14 + Math.random()*14) + "px";
+        elBottom.style.animation = `floatTopBottom ${8 + Math.random()*4}s linear infinite`;
         elBottom.style.animationDelay = Math.random()*5 + "s";
         document.body.appendChild(elBottom);
     }
@@ -237,9 +237,9 @@ function openCard() {
 
 // Candle click
 candleContainer.addEventListener("click", () => {
-    candlePage.remove(); // remove candle + tooltip
+    candlePage.remove();
 
-    // Smoke
+    // Smoke animation
     const smoke = document.createElement("div");
     smoke.className = "smoke";
     smoke.textContent = "💨";
@@ -261,6 +261,7 @@ nextBtn.addEventListener("click", () => {
         messageContainer.innerHTML = `<div class='message-line'>${messages[currentIndex]}</div>`;
     } else {
         nextBtn.style.display = "none";
+        // Confetti
         for(let i=0;i<30;i++){
             const c = document.createElement("div");
             c.className = "confetti";
