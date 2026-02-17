@@ -127,8 +127,9 @@ body {
     100% { text-shadow: 0 0 15px #fff, 0 0 30px #ffecb3, 0 0 45px #ffd166; }
 }
 
+/* Candle tooltip - initially hidden */
 .candle-tooltip {
-    visibility: visible;
+    display: none;           /* hidden initially */
     background-color: rgba(255, 255, 255, 0.85);
     color: #000;
     text-align: center;
@@ -136,7 +137,7 @@ body {
     border-radius: 6px;
     font-size: 16px;
     position: absolute;
-    top: 100px;
+    top: 100px;              /* distance from candle, adjust */
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
@@ -214,7 +215,7 @@ body {
     <!-- Candle page -->
     <div class="candle-container" id="candleContainer">
         <span class="candle" id="candle">🕯️</span>
-        <span class="candle-tooltip">Tap to blow the candle!</span>
+        <span class="candle-tooltip" id="candleTooltip">Tap to blow the candle!</span>
     </div>
 
     <div id="messageContainer"></div>
@@ -240,12 +241,16 @@ const candleContainer = document.getElementById("candleContainer");
 const nextBtn = document.getElementById("nextBtn");
 const container = document.getElementById("messageContainer");
 const pageImage = document.getElementById("pageImage");
+const candleTooltip = document.getElementById("candleTooltip");
 
 // Open card
 function openCard(){
     intro.classList.add("hide");
     card.classList.add("show");
     startFloatingSmileys();
+
+    // Show candle tooltip
+    candleTooltip.style.display = "block";
 }
 
 // Floating smileys top & bottom
@@ -275,6 +280,7 @@ function startFloatingSmileys() {
 // Candle click: blow out and show first page
 candleContainer.addEventListener("click", () => {
     candle.style.display = "none";
+    candleTooltip.style.display = "none"; // hide tooltip after click
 
     const smoke = document.createElement("div");
     smoke.className = "smoke";
@@ -317,14 +323,7 @@ function showMessage(index){
     line.className = "message-line";
     line.textContent = messages[index];
     container.appendChild(line);
-    // optional: change image for each page if desired
 }
 </script>
 </body>
 </html>
-
-
-
-
-
-
